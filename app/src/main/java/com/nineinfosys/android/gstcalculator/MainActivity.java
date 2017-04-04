@@ -47,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.http.OkHttpClientFactory;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.nineinfosys.android.gstcalculator.DashBord.GetApp;
 import com.nineinfosys.android.gstcalculator.Login.Contacts;
 import com.nineinfosys.android.gstcalculator.Login.LoginActivity;
 import com.squareup.okhttp.OkHttpClient;
@@ -88,6 +89,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         //firbase auth
         firebaseAuth=FirebaseAuth.getInstance();
 
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity  {
         rate = (EditText) findViewById(R.id.rateid);
         gst = (TextView) findViewById(R.id.gstid);
         total = (TextView) findViewById(R.id.netid);
+        Button buttonhelp = (Button) findViewById(R.id.gstbuttonhelp);
         cal = (Button) findViewById(R.id.buttoncalculate);
         calclear = (Button) findViewById(R.id.buttonclear);
         select = (Spinner) findViewById(R.id.getselectid);
@@ -144,9 +148,9 @@ public class MainActivity extends AppCompatActivity  {
 
                 if (menuItem.getItemId() == R.id.GetApps) {
 
-                    /*Intent intent=new Intent(MainActivityDrawer.this,RequestApp.class);
+                    Intent intent=new Intent(MainActivity.this,GetApp.class);
                     startActivity(intent);
-*/
+
 
                 }
 
@@ -205,6 +209,14 @@ public class MainActivity extends AppCompatActivity  {
                 total.setText("");
 
 
+            }
+        });
+        buttonhelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent helpref = new Intent(MainActivity.this,Gsttaxhelp.class);
+                startActivity(helpref);
             }
         });
 

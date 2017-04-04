@@ -59,6 +59,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".IncomeTaxMain" /></activity>
+        <activity android:name=".Gsttaxhelp"></activity>
     </application>
 
 
