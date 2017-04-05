@@ -18,7 +18,8 @@
         android:icon="@mipmap/gst1"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".LoginActivity.CustomApplication">
         <activity android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|fontScale|navigation|mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|smallestScreenSize"
             android:windowSoftInputMode="stateAlwaysVisible|stateUnchanged">
@@ -51,15 +52,26 @@
             </intent-filter>
         </activity  >
 
-        <activity android:name=".Login.LoginActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            ></activity>
         <activity android:name=".DashBord.GetApp"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".IncomeTaxMain" /></activity>
         <activity android:name=".Gsttaxhelp"></activity>
+
+        <activity android:name=".LoginActivity.Login"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+        </activity>
+
+        <activity
+            android:name=".LoginActivity.SignUp"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity.Login" />
+        </activity>
     </application>
 
 
