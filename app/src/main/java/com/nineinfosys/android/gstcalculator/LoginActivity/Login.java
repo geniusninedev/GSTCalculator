@@ -80,11 +80,7 @@ public class Login extends AppCompatActivity {
         email = (EditText) findViewById(R.id.edit_text_email_id);
         password = (EditText) findViewById(R.id.edit_text_password);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-       /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
-        getSupportActionBar().setTitle("Login");
+
 
         //AuthListener to check whether user is Login Or Not
         mAuthListener = new FirebaseAuth.AuthStateListener() {
