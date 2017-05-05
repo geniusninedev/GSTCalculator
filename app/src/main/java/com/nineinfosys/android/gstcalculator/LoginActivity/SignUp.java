@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,14 +47,19 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+     /*   Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Sign Up");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);*/
+
         name = (EditText) findViewById(R.id.edit_text_username);
         phoneNumber = (EditText) findViewById(R.id.edit_text_phone_number);
         email = (EditText) findViewById(R.id.edit_text_new_email);
         password = (EditText) findViewById(R.id.edit_text_new_password);
 
         mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.app_id)).child("Users").child(getString(R.string.email_data));
-
+        mRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
         // [START auth_state_listener]
@@ -100,6 +106,7 @@ public class SignUp extends AppCompatActivity {
         UserLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(SignUp.this,Login.class));
             }
         });
@@ -184,6 +191,7 @@ public class SignUp extends AppCompatActivity {
         saveNewUser();
         sendEmailVerification();
         signOut();
+        finish();
         startActivity(new Intent(SignUp.this, Login.class));
 
 
@@ -193,8 +201,8 @@ public class SignUp extends AppCompatActivity {
 
         String user_id = mAuth.getCurrentUser().getUid();
         DatabaseReference current_user_db = mRef.child(user_id);
-        current_user_db.child("Name").setValue(user.getName());
-        current_user_db.child("UserId").setValue(user.getId());
+        current_user_db.child("name").setValue(user.getName());
+        current_user_db.child("id").setValue(user.getId());
         current_user_db.child("Email").setValue(user.getEmail());
         current_user_db.child("Password").setValue(user.getPassword());
         current_user_db.child("Phone Number").setValue(user.getPhoneNumber());
@@ -281,5 +289,25 @@ public class SignUp extends AppCompatActivity {
             mProgressDialog.dismiss();
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
 
+            finish();
+            startActivity(new Intent(SignUp.this, Login.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        startActivity(new Intent(SignUp.this, Login.class));
+    }
 }

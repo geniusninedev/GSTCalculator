@@ -49,7 +49,6 @@ import com.nineinfosys.android.gstcalculator.R;
 
 import org.json.JSONObject;
 
-
 public class Login extends AppCompatActivity {
 
     private static final String TAG = "AndroidBash";
@@ -70,39 +69,21 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);*/
+
         mAuth = FirebaseAuth.getInstance();
-        mDataBase = FirebaseDatabase.getInstance().getReference().child(getString(R.string.app_id)).child("Users").child(getString(R.string.facebook_data));
-        mDataBaseGoogle = FirebaseDatabase.getInstance().getReference().child(getString(R.string.app_id)).child("Users").child(getString(R.string.google_data));
+        mDataBase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDataBaseGoogle = FirebaseDatabase.getInstance().getReference().child("Users");
 
         email = (EditText) findViewById(R.id.edit_text_email_id);
         password = (EditText) findViewById(R.id.edit_text_password);
 
-
-
-        //AuthListener to check whether user is Login Or Not
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-               FirebaseUser mUser = firebaseAuth.getCurrentUser();
-
-                if (mUser != null) {
-                    if (mUser.isEmailVerified()) {
-                        Toast.makeText(Login.this, "You are in =)", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                } else {
-
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-
-            }
-        };
 
         //Resetting Password of Registered Email ID
         resetPassword = (TextView)findViewById(R.id.textViewForgetPass);
@@ -112,7 +93,6 @@ public class Login extends AppCompatActivity {
                 ResetPassword();
             }
         });
-
 
         //FaceBook Login
         startAuthentication();
@@ -208,21 +188,6 @@ public class Login extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-
     //FaceBook and Google OnActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -276,13 +241,16 @@ public class Login extends AppCompatActivity {
     //Goes to SignUp Activity for registering User
     public void onSignUpClicked(View view) {
         Intent intent = new Intent(this, SignUp.class);
+
         startActivity(intent);
+        finish();
     }
 
     //Login User
     public void onLoginClicked(View view) {
        // setUpUser();
         signIn(email.getText().toString(), password.getText().toString());
+
     }
 
     //Validation And Email Verification Of Email Password Login
@@ -319,8 +287,9 @@ public class Login extends AppCompatActivity {
                                 Toast.makeText(Login.this,"You are in =)",Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
                                 finish();
+                                startActivity(intent);
+
                             }
 
                             else {
@@ -328,7 +297,9 @@ public class Login extends AppCompatActivity {
                                 //---- HERE YOU SEND THE EMAIL
                               //  mUser.sendEmailVerification();
                                 Toast.makeText(Login.this,"Verify your email first...",Toast.LENGTH_LONG).show();
+                                FirebaseAuth.getInstance().signOut();
                             }
+
 
 
                         }
@@ -336,6 +307,8 @@ public class Login extends AppCompatActivity {
                         hideProgressDialog();
                     }
                 });
+
+
 
     }
 
@@ -513,7 +486,7 @@ public class Login extends AppCompatActivity {
 
         String user_id = mAuth.getCurrentUser().getUid();
         DatabaseReference current_user_db = mDataBase.child(user_id);
-        current_user_db.child("Name").setValue(user.getName());
+        current_user_db.child("name").setValue(user.getName());
         current_user_db.child("FacebookId").setValue(user.getId());
         current_user_db.child("Email").setValue(user.getEmail());
        // current_user_db.child("Gender").setValue(user.getGender());
@@ -522,7 +495,7 @@ public class Login extends AppCompatActivity {
     private void CreateGoogleUserInDataBase(){
         String user_id = mAuth.getCurrentUser().getUid();
         DatabaseReference current_user_db = mDataBaseGoogle.child(user_id);
-        current_user_db.child("Name").setValue(user.getName());
+        current_user_db.child("name").setValue(user.getName());
         current_user_db.child("GoogleId").setValue(user.getId());
         current_user_db.child("Email").setValue(user.getEmail());
 
